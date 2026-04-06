@@ -15,11 +15,17 @@ const notificationRoutes = require('./src/routes/notificationRoutes');
 const app = express();
 
 // Middleware (note the parentheses)
-// app.use(cors());
+// Allow your frontend URL (replace with your actual frontend URL)
+const allowedOrigins = [
+  'https://food-delivery-frontend-app-production.up.railway.app',
+  'http://localhost:5173' // for local testing
+];
+
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://yifood-delivery.vercel.app'],
-    credentials: true
+  origin: allowedOrigins,
+  credentials: true
 }));
+
 app.use(express.json());
 
 // Serve static files (uploaded images)
