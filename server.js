@@ -1,0 +1,42 @@
+// server.js
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config(); // load .env variables once
+
+const authRoutes = require('./src/routes/authRoutes');
+const categoryRoutes = require('./src/routes/categoryRoutes');
+const foodRoutes = require('./src/routes/foodRoutes');
+const cartRoutes = require('./src/routes/cartRoutes');
+const orderRoutes = require('./src/routes/orderRoutes');
+const notificationRoutes = require('./src/routes/notificationRoutes');
+
+
+const app = express();
+
+// Middleware (note the parentheses)
+// app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5173', 'https://yifood-delivery.vercel.app'],
+    credentials: true
+}));
+app.use(express.json());
+
+// Serve static files (uploaded images)
+app.use('/uploads', express.static('uploads'));
+
+// routes
+app.use('/api/auth', authRoutes);
+app.use('/api/categories',categoryRoutes);
+app.use('/api/foods',foodRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/notifications', notificationRoutes);
+
+// Test route
+app.get('/', (req, res) => {
+    res.send('API running');
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
