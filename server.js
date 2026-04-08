@@ -17,27 +17,16 @@ const app = express();
 // Middleware (note the parentheses)
 // Allow your frontend URL (replace with your actual frontend URL)
 const allowedOrigins = [
-  'https://food-delivery-frontend-app-production.up.railway.app',
-  'http://localhost:5173' // for local testing
+    'https://food-delivery-frontend-app-production.up.railway.app',
+    'http://localhost:5173' // for local testing
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: allowedOrigins, // Your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
 
-// Handle preflight requests manually (optional but safe)
-app.options('*', cors());
 
 app.use(express.json());
 
@@ -46,8 +35,8 @@ app.use('/uploads', express.static('uploads'));
 
 // routes
 app.use('/api/auth', authRoutes);
-app.use('/api/categories',categoryRoutes);
-app.use('/api/foods',foodRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/foods', foodRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/notifications', notificationRoutes);
