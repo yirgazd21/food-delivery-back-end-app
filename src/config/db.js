@@ -7,7 +7,7 @@ const host = process.env.MYSQLHOST || process.env.DB_HOST;
 const user = process.env.MYSQLUSER || process.env.DB_USER;
 const password = process.env.MYSQLPASSWORD || process.env.DB_PASSWORD;
 const database = process.env.MYSQLDATABASE || process.env.DB_NAME;
-const port = process.env.MYSQLPORT || process.env.DB_PORT || 3306;
+const port = process.env.MYSQLPORT || 3306;
 
 const pool = mysql.createPool({
     host,
