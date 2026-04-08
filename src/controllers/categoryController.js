@@ -32,10 +32,14 @@ const getCategoryById = async (req, res) => {
 // @route   POST /api/categories
 const createCategory = async (req, res) => {
     try {
-        const { name, description, image_url } = req.body;
-        if (!name) {
-            return res.status(400).json({ message: 'Category name is required' });
+        const { name, description } = req.body;
+        let image_url = null;
+        if (req.file) {
+            image_url = `/uploads/${req.file.filename}`;
+        } else if (req.body.image_url) {
+            image_url = req.body.image_url;
         }
+        if (!name) return res.status(400).json({ message: 'Category name is required' });
         const newCategory = await Category.create({ name, description, image_url });
         res.status(201).json({ success: true, category: newCategory });
     } catch (error) {
@@ -48,11 +52,13 @@ const createCategory = async (req, res) => {
 // @route   PUT /api/categories/:id
 const updateCategory = async (req, res) => {
     try {
-        const { name, description, image_url } = req.body;
-        const updated = await Category.update(req.params.id, { name, description, image_url });
-        if (!updated) {
-            return res.status(404).json({ message: 'Category not found' });
+        const { name, description } = req.body;
+        let image_url = req.body.image_url;
+        if (req.file) {
+            image_url = `/uploads/${req.file.filename}`;
         }
+        const updated = await Category.update(req.params.id, { name, description, image_url });
+        if (!updated) return res.status(404).json({ message: 'Category not found' });
         res.json({ success: true, message: 'Category updated' });
     } catch (error) {
         console.error(error);
