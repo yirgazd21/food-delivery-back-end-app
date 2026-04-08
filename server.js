@@ -30,11 +30,11 @@ app.use(cors({
 
 app.use(express.json());
 
-// const fs = require('fs');
-// const uploadDir = 'uploads';
-// if (!fs.existsSync(uploadDir)) {
-//     fs.mkdirSync(uploadDir, { recursive: true });
-// }
+const fs = require('fs');
+const uploadDir = 'uploads';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Serve static files (uploaded images)
 app.use('/uploads', express.static('uploads'));
